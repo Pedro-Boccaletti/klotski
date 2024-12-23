@@ -162,5 +162,26 @@ int checkCellBeenVisited(int** shapeCells, int row, int col) {
     return 0;
 }
 
+void moveShape(char** matrix, int** shapeCells, char dummy, int direction) {
+    for (int i = 0; i < MATRIX_ROWS * MATRIX_COLS; i++) {
+        if (shapeCells[i] == NULL) {
+            break;
+        }
+        int row = shapeCells[i][0];
+        int col = shapeCells[i][1];
+        matrix[row][col] = 0;
+    }
+    for (int i = 0; i < MATRIX_ROWS * MATRIX_COLS; i++) {
+        if (shapeCells[i] == NULL) {
+            break;
+        }
+        int row = shapeCells[i][0];
+        int col = shapeCells[i][1];
+        int rowTowards = row + directions[direction][0];
+        int colTowards = col + directions[direction][1];
+        matrix[rowTowards][colTowards] = dummy;
+        free(shapeCells[i]);
+    }
+}
 
 // https://stackoverflow.com/questions/9846920/define-array-in-c
