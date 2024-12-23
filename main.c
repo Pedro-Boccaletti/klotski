@@ -9,12 +9,6 @@ int* checkDirections(char** matrix, int i, int j);
 int checkCellBeenVisited(int** shapeCells, int row, int col);
 int test();
 
-const char testMatrix[3][3] = {
-    {'x', 'x', 'x'},
-    {'D', 0, 'x'},
-    {'R', 'R', 'I'},
-};
-
 
 void checkMoves(char** matrix, int rows, int cols);
 
@@ -29,12 +23,6 @@ int main(void)
     }
     printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
     */
-    char** matrix = allocMatrix(3, 3);
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            setMatrixValue(matrix, i, j, testMatrix[i][j]);
-        }
-    }
     //printMatrix(matrix, 3, 3);
     //checkMoves(matrix, 3, 3);
     test();
@@ -58,10 +46,6 @@ void checkMoves(char** matrix, int rows, int cols) {
                     printf("problema alocação de memoria");
                     return;
                 }
-                int b[4];
-                for (int k = 0; k < 4; k++) {
-                    b[k] = possibleMoves[k];
-                }
                 for (int k = 0; k < 4; k++) {
                     if (possibleMoves[k]) {
                         // create new matrix, move the shape and call again recursively
@@ -72,8 +56,6 @@ void checkMoves(char** matrix, int rows, int cols) {
             }
         }
     }
-
-    return;
 }
 
 
@@ -178,7 +160,6 @@ int checkCellBeenVisited(int** shapeCells, int row, int col) {
         }
     }
     return 0;
-
 }
 
 
