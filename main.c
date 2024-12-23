@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include "matrix.h"
-#define MAX_SIZE 2
-
-
 
 
 int main(void)
