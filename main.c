@@ -73,7 +73,7 @@ int* checkDirections(char** matrix, int i, int j) {
         int colDummy = j - directions[k][1];
         if (checkBoundaries(rowDummy, colDummy) && matrix[rowDummy][colDummy] != 0) {
             int** shapeCells = allocShapeCells();
-            int possible = runShape(matrix, i, j, matrix[i][j], k, shapeCells);
+            int possible = runShape(matrix, rowDummy, colDummy, matrix[rowDummy][colDummy], k, shapeCells);
             if (possible) {
                 temp[k] = 1;
             }

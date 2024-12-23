@@ -31,10 +31,13 @@ int test() {
     int cShape = 0;
     char shape = matrix2[rShape][cShape];
     printf("%c\n", shape);
+    /*
     for (int i = 0; i < 4; i++) {
         int** shapeCells = allocShapeCells();
         int b = runShape(matrix2, rShape, cShape, shape, i, shapeCells);
         printf("%d\n", b);
     }
+    */
+    checkDirections(matrix2, 1, 1);
     return 0;
 }
