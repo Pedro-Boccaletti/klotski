@@ -53,22 +53,22 @@ void checkMoves(char** matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             if (matrix[i][j] == 0) {
-                int* a = checkDirections(matrix, i, j);
-                if (a == NULL) {
+                int* possibleMoves = checkDirections(matrix, i, j);
+                if (possibleMoves == NULL) {
                     printf("problema alocação de memoria");
                     return;
                 }
                 int b[4];
                 for (int k = 0; k < 4; k++) {
-                    b[k] = a[k];
+                    b[k] = possibleMoves[k];
                 }
                 for (int k = 0; k < 4; k++) {
-                    if (a[k]) {
+                    if (possibleMoves[k]) {
                         // create new matrix, move the shape and call again recursively
                         printf("move %d - %d in direction {%d, %d}\n", i, j, directions[k][0], directions[k][1]);
                     }
                 }
-                free(a);
+                free(possibleMoves);
             }
         }
     }
@@ -95,6 +95,7 @@ int* checkDirections(char** matrix, int i, int j) {
             if (possible) {
                 temp[k] = 1;
             }
+            free(shapeCells);
         }
     }
     return temp;
@@ -153,7 +154,6 @@ int runShape(char** matrix, int i, int j, char dummy, int direction, int** shape
     }
     // can't either because its on the edge (first if) or it is not a white space nor the shape itself
     printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 0\n", i, j, dummy, direction);
-
     return 0;
 }
 
