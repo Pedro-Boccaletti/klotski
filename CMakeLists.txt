@@ -5,4 +5,5 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(labProg main.c
         matrix.c
-        matrix.h)
+        matrix.h
+        test.c)

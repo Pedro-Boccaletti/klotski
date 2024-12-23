@@ -1,9 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "matrix.h"
 
+int checkBoundaries(int row, int col);
+int runShape(char** matrix, int i, int j, char dummy, int direction);
+int* checkDirections(char** matrix, int i, int j);
+int test();
+
+const char testMatrix[3][3] = {
+    {'x', 'x', 'x'},
+    {'D', 0, 'x'},
+    {'R', 'R', 'I'},
+};
+
+
+void checkMoves(char** matrix, int rows, int cols);
 
 int main(void)
 {
+    /*
     char** matrix = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
     for (int i = 0; i < MATRIX_ROWS; i++) {
         for (int j = 0; j < MATRIX_COLS; j++) {
@@ -11,6 +27,118 @@ int main(void)
         }
     }
     printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
+    */
+    char** matrix = allocMatrix(3, 3);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            setMatrixValue(matrix, i, j, testMatrix[i][j]);
+        }
+    }
+    //printMatrix(matrix, 3, 3);
+    //checkMoves(matrix, 3, 3);
+    test();
+    return 0;
+}
+
+// [row, col]
+int directions[4][2] = {
+    {0, 1},
+    {1, 0},
+    {0, -1},
+    {-1, 0}
+};
+
+void checkMoves(char** matrix, int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] == 0) {
+                int* a = checkDirections(matrix, i, j);
+                if (a == NULL) {
+                    printf("problema alocação de memoria");
+                    return;
+                }
+                int b[4];
+                for (int k = 0; k < 4; k++) {
+                    b[k] = a[k];
+                }
+                for (int k = 0; k < 4; k++) {
+                    if (a[k]) {
+                        // create new matrix, move the shape and call again recursively
+                        printf("move %d - %d in direction {%d, %d}\n", i, j, directions[k][0], directions[k][1]);
+                    }
+                }
+                free(a);
+            }
+        }
+    }
+
+    return;
+}
+
+
+// return an array of pointers related to all directions
+int* checkDirections(char** matrix, int i, int j) {
+    int* temp = (int*) malloc(4 * sizeof(int));
+    if (temp == NULL) {
+        return NULL;
+    }
+    for (int k = 0; k < 4; k++) {
+        temp[k] = 0;
+        int rowDummy = i - directions[k][0];
+        int colDummy = j - directions[k][1];
+        if (checkBoundaries(rowDummy, colDummy) && matrix[rowDummy][colDummy] != 0) {
+            int possible = runShape(matrix, i, j, matrix[i][j], k);
+            if (possible) {
+                temp[k] = 1;
+            }
+        }
+    }
+    return temp;
+}
+
+// check if a row and column are within the boundaries of the matrix
+int checkBoundaries(int row, int col) {
+    //return row >= 0 && row < MATRIX_ROWS && col >= 0 && col < MATRIX_COLS;
+    return row >= 0 && row < 3 && col < 3 && col >= 0;
+}
+
+// run the shape and checks if the move is valid
+int runShape(char** matrix, int i, int j, char dummy, int direction) {
+    if (matrix[i][j] != dummy) {
+        printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara -1\n", i, j, dummy, direction);
+        return -1; // it's not a part of the shape
+    }
+
+    // check neighbor cells
+    for (int k = 0; k < 4; k++) {
+        int neighborRow = i + directions[k][0];
+        int neighborCol = j + directions[k][1];
+        // if not a part of the board, don't check it
+        if (!checkBoundaries(neighborRow, neighborCol)) {
+            printf("");
+            continue;
+        }
+        int a = runShape(matrix, neighborRow, neighborCol, dummy, direction);
+        if (!a) {
+            printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 0\n", i, j, dummy, direction);
+
+            return 0;
+        }
+
+    }
+
+    int rowTowards = i + directions[direction][0];
+    int colTowards = j + directions[direction][1];
+    if (checkBoundaries(rowTowards, colTowards)) {
+        if (matrix[rowTowards][colTowards] == 0 || matrix[rowTowards][colTowards] == dummy) {
+            printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 1\n", i, j, dummy, direction);
+
+            return 1; // can move in that direction
+        }
+    }
+    // can't either because its on the edge (first if) or it is not a white space nor the shape itself
+    printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 0\n", i, j, dummy, direction);
+
     return 0;
 }
 
