@@ -4,9 +4,18 @@
 
 #include "matrix.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
-char** createMatrix(int rows, int cols) {
+const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
+    {'D', 'D', 0, 'P', 'P', 'I'},
+    {'D', 'D', 0, 'P', 'I', 'M'},
+    {'R', 'R', 'I', 'I', 'M', 'M'},
+    {'T', 'T', 'O', 'I', 'C', 'N'},
+    {'T', 'O', 'O', 'I', 'C', 'N'}
+};
+
+char** allocMatrix(int rows, int cols) {
     size_t charSize = sizeof(char);
     size_t rowSize = cols * charSize;
     size_t matrixSize = rows * sizeof(char*);
@@ -36,4 +45,13 @@ void deleteMatrix(char** matrix, int rows) {
 void setMatrixValue(char** matrix, int row, int col, char value) {
     char* rowPointer = *(matrix + row);
     *(rowPointer + col) = value;
+}
+
+void printMatrix(char** matrix, int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%c ", matrix[i][j]);
+        }
+        printf("\n");
+    }
 }

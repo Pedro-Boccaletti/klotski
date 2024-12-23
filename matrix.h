@@ -5,22 +5,18 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#define MATRIX_ROWS 9
-#define MATRIX_COLS 9
+#define MATRIX_ROWS 5
+#define MATRIX_COLS 6
 
 void deleteMatrix(char** matrix, int rows);
 
-const initialMatrix[][] = {
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {}
-};
+extern const char initialMatrix[MATRIX_ROWS][MATRIX_COLS];
+
+char** allocMatrix(int rows, int cols);
+
+void setMatrixValue(char** matrix, int row, int col, char value);
+
+void printMatrix(char** matrix, int rows, int cols);
 
 #endif //MATRIX_H
 
