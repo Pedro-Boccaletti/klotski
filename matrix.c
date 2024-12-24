@@ -75,3 +75,11 @@ int checkBoundaries(int row, int col) {
     if (DEBUG) return row >= 0 && row < 3 && col < 3 && col >= 0;
     return row >= 0 && row < MATRIX_ROWS && col >= 0 && col < MATRIX_COLS;
 }
+
+void copyMatrix(char** matrix, char** newMatrix, int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            newMatrix[i][j] = matrix[i][j];
+        }
+    }
+}

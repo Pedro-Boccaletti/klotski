@@ -9,4 +9,6 @@ int checkShapeCanMove(char** matrix, int i, int j, char dummy, int direction, in
 
 int** allocShapeCells();
 
+void moveShape(char** matrix, int** shapeCells, char dummy, int direction);
+
 #endif //SHAPE_H

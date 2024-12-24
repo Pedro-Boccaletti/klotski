@@ -76,6 +76,11 @@ int* checkMovesFromAllDirections(char** matrix, int i, int j) {
             int possible = checkShapeCanMove(matrix, rowDummy, colDummy, matrix[rowDummy][colDummy], k, shapeCells);
             if (possible) {
                 temp[k] = 1;
+                char** r = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
+                copyMatrix(matrix, r, MATRIX_ROWS, MATRIX_COLS);
+                moveShape(r, shapeCells, matrix[rowDummy][colDummy], k);
+                checkWhiteSpaces(r, MATRIX_ROWS, MATRIX_COLS);
+                // tem que por algo para quebrar loop infinito
             }
             free(shapeCells);
         }
