@@ -9,4 +9,7 @@ add_executable(labProg main.c
         test.c
         shape.c
         shape.h
-        main.h)
+        main.h
+        stack.c
+        stack.h
+)
