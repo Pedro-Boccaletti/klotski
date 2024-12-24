@@ -11,11 +11,12 @@ int checkBoundaries(int row, int col);
 int runShape(char** matrix, int i, int j, char dummy, int direction, int** shapeCells);
 int* checkDirections(char** matrix, int i, int j);
 int** allocShapeCells();
+void checkMoves(char** matrix, int rows, int cols);
 
 
 int test() {
     const char testMatrix2[3][3] = {
-        {'x', 'x', 'x'},
+        {'B', 'x', 'x'},
         {0, 0, 'A'},
         {'R', 'R', 'I'},
     };
@@ -39,5 +40,6 @@ int test() {
     }
     */
     checkDirections(matrix2, 1, 1);
+    checkMoves(matrix2, 3, 3);
     return 0;
 }
