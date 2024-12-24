@@ -18,6 +18,8 @@ void setMatrixValue(char** matrix, int row, int col, char value);
 
 void printMatrix(char** matrix, int rows, int cols);
 
+int checkBoundaries(int row, int col);
+
 #endif //MATRIX_H
 
 

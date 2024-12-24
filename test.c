@@ -8,10 +8,10 @@
 
 
 int checkBoundaries(int row, int col);
-int runShape(char** matrix, int i, int j, char dummy, int direction, int** shapeCells);
-int* checkDirections(char** matrix, int i, int j);
+int checkShapeCanMove(char** matrix, int i, int j, char dummy, int direction, int** shapeCells);
+int* checkMovesFromAllDirections(char** matrix, int i, int j);
 int** allocShapeCells();
-void checkMoves(char** matrix, int rows, int cols);
+void checkWhiteSpaces(char** matrix, int rows, int cols);
 
 
 int test() {
@@ -39,7 +39,7 @@ int test() {
         printf("%d\n", b);
     }
     */
-    checkDirections(matrix2, 1, 1);
-    checkMoves(matrix2, 3, 3);
+    checkMovesFromAllDirections(matrix2, 1, 1);
+    checkWhiteSpaces(matrix2, 3, 3);
     return 0;
 }

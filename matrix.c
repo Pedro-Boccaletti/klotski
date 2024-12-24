@@ -3,7 +3,7 @@
 //
 
 #include "matrix.h"
-
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -54,4 +54,24 @@ void printMatrix(char** matrix, int rows, int cols) {
         }
         printf("\n");
     }
+}
+
+char* matrixToString(char** matrix, int rows, int cols) {
+    char* str = (char*) malloc(rows * cols * sizeof(char));
+    if (str == NULL) {
+        return NULL;
+    }
+    char* strPointer = str;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            *strPointer++ = matrix[i][j];
+        }
+    }
+    return str;
+}
+
+// check if a row and column are within the boundaries of the matrix
+int checkBoundaries(int row, int col) {
+    if (DEBUG) return row >= 0 && row < 3 && col < 3 && col >= 0;
+    return row >= 0 && row < MATRIX_ROWS && col >= 0 && col < MATRIX_COLS;
 }
