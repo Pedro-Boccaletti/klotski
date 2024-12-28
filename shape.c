@@ -38,7 +38,7 @@ void moveShape(char** matrix, int** shapeCells, char dummy, int direction) {
         }
         int row = shapeCells[i][0];
         int col = shapeCells[i][1];
-        matrix[row][col] = 0;
+        matrix[row][col] = BLANK_SPACE;
     }
     for (int i = 0; i < MATRIX_ROWS * MATRIX_COLS; i++) {
         if (shapeCells[i] == NULL) {
@@ -56,7 +56,7 @@ void moveShape(char** matrix, int** shapeCells, char dummy, int direction) {
 // run the shape and checks if the move is valid
 int checkShapeCanMove(char** matrix, int i, int j, char dummy, int direction, int** shapeCells) {
     if (matrix[i][j] != dummy) {
-        if (DEBUG) printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara -1\n", i, j, dummy, direction);
+        if (DEBUG > 1) printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara -1\n", i, j, dummy, direction);
         return -1; // it's not a part of the shape
     }
     for (int k = 0; k < MATRIX_ROWS * MATRIX_COLS; k++) {
@@ -86,7 +86,7 @@ int checkShapeCanMove(char** matrix, int i, int j, char dummy, int direction, in
         }
         int a = checkShapeCanMove(matrix, neighborRow, neighborCol, dummy, direction, shapeCells);
         if (!a) {
-            if (DEBUG) printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 0\n", i, j, dummy, direction);
+            if (DEBUG > 1) printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 0\n", i, j, dummy, direction);
             return 0;
         }
 
@@ -95,13 +95,13 @@ int checkShapeCanMove(char** matrix, int i, int j, char dummy, int direction, in
     int rowTowards = i + directions[direction][0];
     int colTowards = j + directions[direction][1];
     if (checkBoundaries(rowTowards, colTowards)) {
-        if (matrix[rowTowards][colTowards] == 0 || matrix[rowTowards][colTowards] == dummy) {
-            if (DEBUG) printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 1\n", i, j, dummy, direction);
+        if (matrix[rowTowards][colTowards] == BLANK_SPACE || matrix[rowTowards][colTowards] == dummy) {
+            if (DEBUG > 1) printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 1\n", i, j, dummy, direction);
 
             return 1; // can move in that direction
         }
     }
     // can't either because its on the edge (first if) or it is not a white space nor the shape itself
-    if (DEBUG) printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 0\n", i, j, dummy, direction);
+    if (DEBUG > 1) printf("debug {i:%d, j:%d, dummy:%c, direction:%d} retornara 0\n", i, j, dummy, direction);
     return 0;
 }

@@ -8,11 +8,11 @@
 #include <stdlib.h>
 
 const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
-    {'D', 'D', 0, 'P', 'P', 'I'},
-    {'D', 'D', 0, 'P', 'I', 'M'},
-    {'R', 'R', 'I', 'I', 'M', 'M'},
-    {'T', 'T', 'O', 'I', 'C', 'N'},
-    {'T', 'O', 'O', 'I', 'C', 'N'}
+    {'D', 'D', BLANK_SPACE, 'P', 'P', 'a'},
+    {'D', 'D', BLANK_SPACE, 'P', 'b', 'M'},
+    {'R', 'R', 'd', 'c', 'M', 'M'},
+    {'T', 'T', 'O', 'e', 'C', 'N'},
+    {'T', 'O', 'O', 'f', 'C', 'N'}
 };
 
 char** allocMatrix(int rows, int cols) {

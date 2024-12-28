@@ -17,8 +17,8 @@ void checkWhiteSpaces(char** matrix, int rows, int cols);
 int test() {
     const char testMatrix2[3][3] = {
         {'B', 'x', 'x'},
-        {0, 0, 'A'},
-        {'R', 'R', 'I'},
+        {'R', BLANK_SPACE, BLANK_SPACE},
+        {'R', 'T', 'I'},
     };
 
     char** matrix2 = allocMatrix(3, 3);
