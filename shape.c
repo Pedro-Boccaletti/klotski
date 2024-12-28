@@ -60,6 +60,9 @@ int checkShapeCanMove(char** matrix, int i, int j, char dummy, int direction, in
         return -1; // it's not a part of the shape
     }
     for (int k = 0; k < MATRIX_ROWS * MATRIX_COLS; k++) {
+        if (shapeCells[k] && shapeCells[k][0] == i && shapeCells[k][1] == j) {
+            return -1; // already visited
+        }
         if (shapeCells[k] == NULL) {
             shapeCells[k] = (int*) malloc(2 * sizeof(int));
             if (shapeCells[k] == NULL) {
@@ -68,9 +71,6 @@ int checkShapeCanMove(char** matrix, int i, int j, char dummy, int direction, in
             shapeCells[k][0] = i;
             shapeCells[k][1] = j;
             break;
-        }
-        if (shapeCells[k][0] == i && shapeCells[k][1] == j) {
-            return -1; // already visited
         }
     }
     // check neighbor cells
