@@ -6,8 +6,8 @@
 #include "stack.h"
 
 
-void checkWhiteSpaces(char** matrix, int rows, int cols);
-int test();
+int checkWanted(char** matrix, int* wanted);
+int test(char**);
 
 int main(void)
 {
@@ -29,6 +29,12 @@ int main(void)
         return 1;
     }
     int stackIndex = 0;
+    int a = checkWhiteSpaces(matrix, testedStack, &stackIndex, wanted, 0);
+    printf("%d\n", a);
+    return 0;
+    if (test(testedStack)) {
+        return 1;
+    }
     return 0;
 }
 
@@ -40,15 +46,7 @@ int directions[4][2] = {
     {-1, 0}
 };
 
-void checkWhiteSpaces(char** matrix, int rows, int cols) {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            if (matrix[i][j] == 0) {
-                int* possibleMoves = checkMovesFromAllDirections(matrix, i, j);
-                if (possibleMoves == NULL) {
-                    printf("problema alocação de memoria");
-                    return;
-                }
+int checkWhiteSpaces(char** matrix, char** checkedStack, int* stackIndex, int* wanted, int depth) {
     if (depth >= MAX_DEPTH) {
         return 0;
     }
@@ -61,19 +59,45 @@ void checkWhiteSpaces(char** matrix, int rows, int cols) {
         exit(0);
         return 1;
     }
+    char* str = matrixToString(matrix, MATRIX_ROWS, MATRIX_COLS);
+    if (contains(checkedStack, stackIndex, str)) {
+        if (DEBUG) printf("debug {str:%s} already in stack\n", str);
+        free(str);
+        return 0;
+    }
+    push(checkedStack, stackIndex, str);
+    for (int i = 0; i < MATRIX_ROWS; i++) {
+        for (int j = 0; j < MATRIX_COLS; j++) {
+            if (matrix[i][j] == BLANK_SPACE) {
+                if (DEBUG) printf("debug {i:%d, j:%d} chamara checkMovesFromAllDirections\n", i, j);
+                unsigned short int a = checkMovesFromAllDirections(matrix, i, j);
+                if (DEBUG) printf("debug {i:%d, j:%d} checkMovesFromAllDirections retornou %d\n", i, j, a);
                 for (int k = 0; k < 4; k++) {
-                    if (possibleMoves[k]) {
-                        // create new matrix, move the shape and call again recursively
-                        if (DEBUG) {
-                            printf("move %d - %d from direction {%d, %d}\n", i, j, directions[k][0], directions[k][1]);
+                    if (a & (1 << k)) {
+                        int rowDummy = i - directions[k][0];
+                        int colDummy = j - directions[k][1];
+                        int** shapeCells = allocShapeCells();
+                        if (shapeCells == NULL) {
+                            if (DEBUG) { printf("problema alocando shapeCells"); }
+                            return -1;
                         }
-
+                        getShapeCells(matrix, rowDummy, colDummy, matrix[rowDummy][colDummy], shapeCells);
+                        char** newMatrix = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
+                        if (newMatrix == NULL) {
+                            if (DEBUG) { printf("problema alocando newMatrix"); }
+                            return -1;
+                        }
+                        copyMatrix(matrix, newMatrix, MATRIX_ROWS, MATRIX_COLS);
+                        moveShape(newMatrix, shapeCells, matrix[rowDummy][colDummy], k);
+                        deleteShapeCells(shapeCells);
+                        checkWhiteSpaces(newMatrix, checkedStack, stackIndex, wanted, depth + 1);
                     }
                 }
-                free(possibleMoves);
             }
         }
     }
+    deleteMatrix(matrix, MATRIX_ROWS);
+    return 0;
 }
 
 
