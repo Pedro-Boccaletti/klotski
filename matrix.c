@@ -65,7 +65,7 @@ char* matrixToString(char** matrix, int rows, int cols) {
     char* strPointer = str;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            *strPointer++ = matrix[i][j];
+            *strPointer++ = (matrix[i][j] == 0) ? '0' : matrix[i][j];
         }
     }
     *strPointer = '\0';
