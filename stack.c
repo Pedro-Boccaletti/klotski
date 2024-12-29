@@ -21,14 +21,16 @@ void push(char** stack, int* index, char* str) {
     if (*index == STACK_SIZE - 1) {
         printf("Stack is full\n");
         exit(-1);
-        return;
     }
     if (stack[*index] == NULL) {
-        if (DEBUG) printf("debug {i:%d, str:%s}\n", *index, str);
+        if (DEBUG) {
+            printf("debug {i:%d, str:%s}\n", *index, str);
+        }
         stack[*index++] = str;
         return;
     }
-    printf("deu bo\n");
+    printf("problem in Stack\n");
+    exit(-1);
 }
 
 char* pop(char** stack, int* index) {

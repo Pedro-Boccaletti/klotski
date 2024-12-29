@@ -60,6 +60,8 @@ void printMatrix(char** matrix, int rows, int cols) {
 char* matrixToString(char** matrix, int rows, int cols) {
     char* str = (char*) malloc((rows * cols * sizeof(char) + 1));
     if (str == NULL) {
+        printf("problem allocating memory for str\n");
+        exit(-1);
         return NULL;
     }
     char* strPointer = str;
@@ -74,7 +76,6 @@ char* matrixToString(char** matrix, int rows, int cols) {
 
 // check if a row and column are within the boundaries of the matrix
 int checkBoundaries(int row, int col) {
-    if (DEBUG) return row >= 0 && row < 3 && col < 3 && col >= 0;
     return row >= 0 && row < MATRIX_ROWS && col >= 0 && col < MATRIX_COLS;
 }
 
