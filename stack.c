@@ -26,7 +26,7 @@ void push(char** stack, int* index, char* str) {
         if (DEBUG) {
             printf("debug {i:%d, str:%s}\n", *index, str);
         }
-        stack[*index++] = str;
+        stack[(*index)++] = str;
         return;
     }
     printf("problem in Stack\n");
@@ -36,7 +36,7 @@ void push(char** stack, int* index, char* str) {
 char* pop(char** stack, int* index) {
     if (stack[*index] != NULL) {
         char* str = stack[*index];
-        stack[*index--] = NULL;
+        stack[(*index)--] = NULL;
         return str;
     }
     return NULL;
