@@ -56,8 +56,9 @@ void printMatrix(char** matrix, int rows, int cols) {
     }
 }
 
+// creates a unique string related to this state, to be compared latter
 char* matrixToString(char** matrix, int rows, int cols) {
-    char* str = (char*) malloc(rows * cols * sizeof(char));
+    char* str = (char*) malloc((rows * cols * sizeof(char) + 1));
     if (str == NULL) {
         return NULL;
     }
@@ -67,6 +68,7 @@ char* matrixToString(char** matrix, int rows, int cols) {
             *strPointer++ = matrix[i][j];
         }
     }
+    *strPointer = '\0';
     return str;
 }
 
