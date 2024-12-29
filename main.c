@@ -52,6 +52,10 @@ void checkWhiteSpaces(char** matrix, int rows, int cols) {
     if (depth >= MAX_DEPTH) {
         return 0;
     }
+    if (DEBUG) {
+        printf("checkWhiteSpaces ultimo index do stack = %d\n", *stackIndex);
+        printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
+    }
     if (checkWanted(matrix, wanted)) {
         printf("achou\n");
         exit(0);
