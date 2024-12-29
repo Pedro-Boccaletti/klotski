@@ -3,6 +3,7 @@
 #include "main.h"
 #include "matrix.h"
 #include "shape.h"
+#include "stack.h"
 
 
 void checkWhiteSpaces(char** matrix, int rows, int cols);
@@ -10,22 +11,24 @@ int test();
 
 int main(void)
 {
-    /*
     char** matrix = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
+    if (matrix == NULL) {
+        return 1;
+    }
     for (int i = 0; i < MATRIX_ROWS; i++) {
         for (int j = 0; j < MATRIX_COLS; j++) {
             setMatrixValue(matrix, i, j, initialMatrix[i][j]);
         }
     }
-    printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
-    */
-    //printMatrix(matrix, 3, 3);
-    //checkMoves(matrix, 3, 3);
-    test();
+    char** testedStack = allocStack();
+    if (testedStack == NULL) {
+        return 1;
+    }
     int wanted[3] = {'D', MATRIX_ROWS - 1, MATRIX_COLS - 1};
     if (!checkWantedAllowed(wanted)) {
         return 1;
     }
+    int stackIndex = 0;
     return 0;
 }
 
@@ -89,7 +92,11 @@ int* checkMovesFromAllDirections(char** matrix, int i, int j) {
             free(shapeCells);
         }
     }
-    return temp;
+    if (DEBUG) {
+        printf("possibleDirections: %d\n", possibleDirections);
+    }
+    return possibleDirections;
+}
 
 int checkWanted(char** matrix, int* wanted) {
     return matrix[wanted[1]][wanted[2]] == wanted[0];
