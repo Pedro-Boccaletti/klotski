@@ -23,6 +23,8 @@ int checkBoundaries(int row, int col);
 
 void copyMatrix(char** matrix, char** newMatrix, int rows, int cols);
 
+char* matrixToString(char** matrix, int rows, int cols);
+
 #endif //MATRIX_H
 
 
