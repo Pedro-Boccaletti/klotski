@@ -52,6 +52,11 @@ void checkWhiteSpaces(char** matrix, int rows, int cols) {
     if (depth >= MAX_DEPTH) {
         return 0;
     }
+    if (checkWanted(matrix, wanted)) {
+        printf("achou\n");
+        exit(0);
+        return 1;
+    }
                 for (int k = 0; k < 4; k++) {
                     if (possibleMoves[k]) {
                         // create new matrix, move the shape and call again recursively
