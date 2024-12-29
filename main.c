@@ -22,6 +22,10 @@ int main(void)
     //printMatrix(matrix, 3, 3);
     //checkMoves(matrix, 3, 3);
     test();
+    int wanted[3] = {'D', MATRIX_ROWS - 1, MATRIX_COLS - 1};
+    if (!checkWantedAllowed(wanted)) {
+        return 1;
+    }
     return 0;
 }
 
@@ -86,7 +90,13 @@ int* checkMovesFromAllDirections(char** matrix, int i, int j) {
         }
     }
     return temp;
+
+int checkWanted(char** matrix, int* wanted) {
+    return matrix[wanted[1]][wanted[2]] == wanted[0];
 }
 
+int checkWantedAllowed(int* const wanted) {
+    return checkBoundaries(wanted[1], wanted[2]);
+}
 
 // https://stackoverflow.com/questions/9846920/define-array-in-c
