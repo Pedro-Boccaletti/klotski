@@ -49,6 +49,9 @@ void checkWhiteSpaces(char** matrix, int rows, int cols) {
                     printf("problema alocação de memoria");
                     return;
                 }
+    if (depth >= MAX_DEPTH) {
+        return 0;
+    }
                 for (int k = 0; k < 4; k++) {
                     if (possibleMoves[k]) {
                         // create new matrix, move the shape and call again recursively

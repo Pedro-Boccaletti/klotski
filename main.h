@@ -13,5 +13,6 @@ int checkWantedAllowed(int* wanted);
 extern int directions[4][2];
 
 #define DEBUG 1
+#define MAX_DEPTH 1000
 
 #endif //MAIN_H
