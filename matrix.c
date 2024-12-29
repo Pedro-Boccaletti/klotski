@@ -35,8 +35,8 @@ char** allocMatrix(int rows, int cols) {
 
 void deleteMatrix(char** matrix, int rows) {
     // free each row
-    while (rows--) {
-        free(*matrix++);
+    for (int i = 0; i < rows; i++) {
+        free(matrix[i]);
     }
     // free row pointers
     free(matrix);
