@@ -66,30 +66,19 @@ void checkWhiteSpaces(char** matrix, int rows, int cols) {
 
 
 // return an array of pointers related to all directions
-int* checkMovesFromAllDirections(char** matrix, int i, int j) {
-    int* temp = (int*) malloc(4 * sizeof(int));
-    if (temp == NULL) {
-        return NULL;
-    }
+unsigned short int checkMovesFromAllDirections(char** matrix, int i, int j) {
+    unsigned short int possibleDirections = 0;
     for (int k = 0; k < 4; k++) {
-        temp[k] = 0;
         int rowDummy = i - directions[k][0];
         int colDummy = j - directions[k][1];
-        if (checkBoundaries(rowDummy, colDummy) && matrix[rowDummy][colDummy] != 0) {
-            int** shapeCells = allocShapeCells();
-            if (shapeCells == NULL) {
-                return NULL;
-            }
-            int possible = checkShapeCanMove(matrix, rowDummy, colDummy, matrix[rowDummy][colDummy], k, shapeCells);
-            if (possible) {
-                temp[k] = 1;
-                char** r = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
-                copyMatrix(matrix, r, MATRIX_ROWS, MATRIX_COLS);
-                moveShape(r, shapeCells, matrix[rowDummy][colDummy], k);
-                checkWhiteSpaces(r, MATRIX_ROWS, MATRIX_COLS);
-                // tem que por algo para quebrar loop infinito
-            }
-            free(shapeCells);
+        int debuging = checkBoundaries(rowDummy, colDummy);
+        if (DEBUG) {
+            printf("rowDummy: %d, colDummy: %d\n", rowDummy, colDummy);
+            printf("checkBoundaries: %d\t%c\n", debuging, debuging ? matrix[rowDummy][colDummy] : ' ');
+        }
+        if (checkBoundaries(rowDummy, colDummy) && matrix[rowDummy][colDummy] != BLANK_SPACE) {
+            int possible = checkShapeCanMove(matrix, rowDummy, colDummy, k);
+            possibleDirections |= possible << k;
         }
     }
     if (DEBUG) {
