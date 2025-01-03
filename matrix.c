@@ -67,7 +67,21 @@ char* matrixToString(char** matrix, int rows, int cols) {
     char* strPointer = str;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            *strPointer++ = (matrix[i][j] == 0) ? '0' : matrix[i][j];
+            char c = matrix[i][j];
+            switch (c) {
+                case BLANK_SPACE: c = '0'; break;
+                case 'a': ;
+                case 'b': ;
+                case 'c': ;
+                case 'd': ;
+                case 'e': ;
+                case 'f': c = 'I'; break;
+                case 'O': c = 'M'; break;
+                case 'T': c = 'P'; break;
+                case 'N': c = 'C'; break;
+            }
+
+            *strPointer++ = c;
         }
     }
     *strPointer = '\0';
