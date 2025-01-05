@@ -9,6 +9,11 @@
 #define MATRIX_COLS 6
 #define BLANK_SPACE '-'
 
+struct Node {
+    char** data;
+    struct Node* parent;
+};
+
 void deleteMatrix(char** matrix, int rows);
 
 extern const char initialMatrix[MATRIX_ROWS][MATRIX_COLS];
@@ -24,6 +29,8 @@ int checkBoundaries(int row, int col);
 void copyMatrix(char** matrix, char** newMatrix, int rows, int cols);
 
 char* matrixToString(char** matrix, int rows, int cols);
+
+struct Node* createMatrixNode(char** matrix);
 
 #endif //MATRIX_H
 

@@ -100,3 +100,12 @@ void copyMatrix(char** matrix, char** newMatrix, int rows, int cols) {
         }
     }
 }
+
+struct Node* createMatrixNode(char** matrix) {
+    struct Node* matrixNode = (struct Node*) malloc(sizeof(struct Node));
+    if (matrixNode == NULL) {
+        return NULL;
+    }
+    matrixNode->data = matrix;
+    return matrixNode;
+}
