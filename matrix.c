@@ -106,6 +106,7 @@ struct Node* createMatrixNode(char** matrix) {
     if (matrixNode == NULL) {
         return NULL;
     }
+    matrixNode->parent = NULL;
     matrixNode->data = matrix;
     return matrixNode;
 }
