@@ -29,6 +29,13 @@ int main(void)
         return 1;
     }
     int stackIndex = 0;
+
+    struct Node* matrixNode = createMatrixNode(matrix);
+    if (matrixNode == NULL) {
+        return 1;
+    }
+    loop(matrixNode, testedStack, &stackIndex, wanted, 0);
+    return 0;
     int a = checkWhiteSpaces(matrix, testedStack, &stackIndex, wanted, 0);
     printf("%d\n", a);
     return 0;
@@ -46,7 +53,8 @@ int directions[4][2] = {
     {-1, 0}
 };
 
-void loop(char** matrix, char** checkedStack, int* stackIndex, int* wanted, int depth) {
+void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, int* wanted, int depth) {
+    char** matrix = matrixNode->data;
     if (depth >= MAX_DEPTH) {
         return;
     }
@@ -70,10 +78,13 @@ void loop(char** matrix, char** checkedStack, int* stackIndex, int* wanted, int 
     int distx = a[0] - wanted[1];
     int disty = a[1] - wanted[2];
     free(a);
+    // check all possible moves
     int nMoves = 0;
     char*** newMatrixes = checkAllMoves(matrix, &nMoves);
     for (int i = 0; i < nMoves; i++) {
-        loop(matrix, checkedStack, stackIndex, wanted, depth + 1);
+        struct Node* node = createMatrixNode(newMatrixes[i]);
+        node->parent = matrixNode;
+        loop(node, checkedStack, stackIndex, wanted, depth + 1);
     }
     free(newMatrixes);
 }
