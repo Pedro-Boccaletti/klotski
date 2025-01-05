@@ -210,8 +210,8 @@ int checkWantedAllowed(int* const wanted) {
 }
 
 int* locateWanted(char** matrix, char wanted) {
-    for (int i = MATRIX_ROWS; i >= 0; i--) {
-        for (int j = MATRIX_COLS; j >= 0; j--) {
+    for (int i = MATRIX_ROWS - 1; i >= 0; i--) {
+        for (int j = MATRIX_COLS - 1; j >= 0; j--) {
             if (matrix[i][j] == wanted) {
                 int* local = (int*) malloc(2 * sizeof(int));
                 if (local == NULL) {
