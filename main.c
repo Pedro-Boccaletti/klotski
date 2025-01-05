@@ -100,6 +100,52 @@ int checkWhiteSpaces(char** matrix, char** checkedStack, int* stackIndex, int* w
     return 0;
 }
 
+char*** checkAllMoves(char** matrix, int* n) {
+    size_t size = 8 * sizeof(char**);
+    char*** allMoves = (char***) malloc(size);
+    if (allMoves == NULL) {
+        return NULL;
+    }
+
+    int checkedRow = -1;
+    int checkedCol = -1;
+    for (int i = 0; i < MATRIX_ROWS; i++) {
+        for (int j = 0; j < MATRIX_COLS; j++) {
+            if (matrix[i][j] == BLANK_SPACE && !(i == checkedRow && j == checkedCol)) {
+                checkedRow = i;
+                checkedCol = j;
+                if (DEBUG) printf("debug {i:%d, j:%d} chamara checkMovesFromAllDirections\n", i, j);
+                unsigned short int a = checkMovesFromAllDirections(matrix, i, j);
+                if (DEBUG) printf("debug {i:%d, j:%d} checkMovesFromAllDirections retornou %d\n", i, j, a);
+                for (int k = 0; k < 4; k++) {
+                    if (a & (1 << k)) {
+                        int rowDummy = i - directions[k][0];
+                        int colDummy = j - directions[k][1];
+                        int** shapeCells = allocShapeCells();
+                        if (shapeCells == NULL) {
+                            if (DEBUG) { printf("problema alocando shapeCells"); }
+                            free(allMoves);
+                            return NULL;
+                        }
+                        getShapeCells(matrix, rowDummy, colDummy, matrix[rowDummy][colDummy], shapeCells);
+                        char** newMatrix = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
+                        if (newMatrix == NULL) {
+                            if (DEBUG) { printf("problema alocando newMatrix"); }
+                            deleteShapeCells(shapeCells);
+                            free(allMoves);
+                            return NULL;
+                        }
+                        copyMatrix(matrix, newMatrix, MATRIX_ROWS, MATRIX_COLS);
+                        moveShape(newMatrix, shapeCells, matrix[rowDummy][colDummy], k);
+                        deleteShapeCells(shapeCells);
+                        allMoves[(*n)++] = newMatrix;
+                    }
+                }
+            }
+        }
+    }
+    return allMoves;
+}
 
 // return an array of pointers related to all directions
 unsigned short int checkMovesFromAllDirections(char** matrix, int i, int j) {
