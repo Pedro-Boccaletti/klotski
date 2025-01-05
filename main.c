@@ -177,4 +177,21 @@ int checkWantedAllowed(int* const wanted) {
     return checkBoundaries(wanted[1], wanted[2]);
 }
 
+int* locateWanted(char** matrix, char wanted) {
+    for (int i = MATRIX_ROWS; i >= 0; i--) {
+        for (int j = MATRIX_COLS; j >= 0; j--) {
+            if (matrix[i][j] == wanted) {
+                int* local = (int*) malloc(2 * sizeof(int));
+                if (local == NULL) {
+                    return NULL;
+                }
+                local[0] = i;
+                local[1] = j;
+                return local;
+            }
+        }
+    }
+    return NULL;
+}
+
 // https://stackoverflow.com/questions/9846920/define-array-in-c
