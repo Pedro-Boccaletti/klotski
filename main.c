@@ -46,6 +46,38 @@ int directions[4][2] = {
     {-1, 0}
 };
 
+void loop(char** matrix, char** checkedStack, int* stackIndex, int* wanted, int depth) {
+    if (depth >= MAX_DEPTH) {
+        return;
+    }
+    if (DEBUG) {
+        printf("checkWhiteSpaces ultimo index do stack = %d\n", *stackIndex);
+        printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
+    }
+    if (checkWanted(matrix, wanted)) {
+        printf("achou\n");
+        exit(0);
+        return;
+    }
+    char* str = matrixToString(matrix, MATRIX_ROWS, MATRIX_COLS);
+    if (contains(checkedStack, stackIndex, str)) {
+        if (DEBUG) printf("debug {str:%s} already in stack\n", str);
+        free(str);
+        return;
+    }
+    push(checkedStack, stackIndex, str);
+    int* a = locateWanted(matrix, wanted[0]);
+    int distx = a[0] - wanted[1];
+    int disty = a[1] - wanted[2];
+    free(a);
+    int nMoves = 0;
+    char*** newMatrixes = checkAllMoves(matrix, &nMoves);
+    for (int i = 0; i < nMoves; i++) {
+        loop(matrix, checkedStack, stackIndex, wanted, depth + 1);
+    }
+    free(newMatrixes);
+}
+
 int checkWhiteSpaces(char** matrix, char** checkedStack, int* stackIndex, int* wanted, int depth) {
     if (depth >= MAX_DEPTH) {
         return 0;
