@@ -3,17 +3,25 @@
 //
 
 #include "matrix.h"
-#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
+/*
 const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'D', 'D', BLANK_SPACE, 'P', 'P', 'a'},
     {'D', 'D', BLANK_SPACE, 'P', 'b', 'M'},
     {'R', 'R', 'd', 'c', 'M', 'M'},
     {'T', 'T', 'O', 'e', 'C', 'N'},
     {'T', 'O', 'O', 'f', 'C', 'N'}
+};
+*/
+const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
+    {'a', 'D', 'D', 'm'},
+    {'b', 'D', 'D', 'l'},
+    {'c', 'g', 'h', 'k'},
+    {'d', 'f', 'i', 'j'},
+    {'e', BLANK_SPACE, BLANK_SPACE, 'n'}
 };
 
 char** allocMatrix(int rows, int cols) {

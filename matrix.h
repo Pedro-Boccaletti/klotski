@@ -6,7 +6,7 @@
 #define MATRIX_H
 
 #define MATRIX_ROWS 5
-#define MATRIX_COLS 6
+#define MATRIX_COLS 4//6
 #define BLANK_SPACE '-'
 
 struct Node {
