@@ -51,7 +51,13 @@ void setMatrixValue(char** matrix, int row, int col, char value) {
 void printMatrix(char** matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            printf("%c ", matrix[i][j]);
+            char c = matrix[i][j];
+            if (c == BLANK_SPACE) {
+                c = ' ';
+            } else if (c >= 'a' && c <= 'z') {
+                c = 'I';
+            }
+            printf("%c ", c);
         }
         printf("\n");
     }
@@ -69,17 +75,16 @@ char* matrixToString(char** matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             char c = matrix[i][j];
+            if (c >= 'a' && c <= 'z') {
+                c = 'a';
+            }
             switch (c) {
                 case BLANK_SPACE: c = '0'; break;
-                case 'a': ;
-                case 'b': ;
-                case 'c': ;
-                case 'd': ;
-                case 'e': ;
-                case 'f': c = 'I'; break;
+                case 'a': c = 'I'; break;
                 case 'O': c = 'M'; break;
                 case 'T': c = 'P'; break;
                 case 'N': c = 'C'; break;
+                default: break;
             }
 
             *strPointer++ = c;
