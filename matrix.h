@@ -32,7 +32,7 @@ char* matrixToString(char** matrix, int rows, int cols);
 
 struct Node* createMatrixNode(char** matrix);
 
-void printAnswer(struct Node* node);
+void printAnswer(struct Node* node, unsigned int seconds);
 
 #endif //MATRIX_H
 

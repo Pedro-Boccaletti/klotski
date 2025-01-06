@@ -67,7 +67,8 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, int* wa
     }
     if (checkWanted(matrix, wanted)) {
         printf("achou\n");
-        printAnswer(matrixNode);
+        printAnswer(matrixNode, 0);
+        printf("encontrado com %d movimentos\n", depth);
         exit(0);
         return;
     }

@@ -125,12 +125,12 @@ struct Node* createMatrixNode(char** matrix) {
     return matrixNode;
 }
 
-void printAnswer(struct Node* node) {
+void printAnswer(struct Node* node, unsigned int seconds) {
     if (node == NULL) {
         return;
     }
-    printAnswer(node->parent);
-    sleep(1);
+    printAnswer(node->parent, seconds);
+    sleep(seconds);
     printMatrix(node->data, MATRIX_ROWS, MATRIX_COLS);
     printf("----------------------------------------------------\n");
 }
