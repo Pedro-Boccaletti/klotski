@@ -32,6 +32,8 @@ char* matrixToString(char** matrix, int rows, int cols);
 
 struct Node* createMatrixNode(char** matrix);
 
+void printAnswer(struct Node* node);
+
 #endif //MATRIX_H
 
 

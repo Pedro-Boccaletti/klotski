@@ -64,6 +64,7 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, int* wa
     }
     if (checkWanted(matrix, wanted)) {
         printf("achou\n");
+        printAnswer(matrixNode);
         exit(0);
         return;
     }
@@ -238,3 +239,5 @@ int* locateWanted(char** matrix, char wanted) {
 }
 
 // https://stackoverflow.com/questions/9846920/define-array-in-c
+// https://www.geeksforgeeks.org/c-user-defined-data-types/
+// https://www.geeksforgeeks.org/void-pointer-c-cpp/

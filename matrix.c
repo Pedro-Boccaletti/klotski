@@ -6,6 +6,7 @@
 #include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'D', 'D', BLANK_SPACE, 'P', 'P', 'a'},
@@ -109,4 +110,14 @@ struct Node* createMatrixNode(char** matrix) {
     matrixNode->parent = NULL;
     matrixNode->data = matrix;
     return matrixNode;
+}
+
+void printAnswer(struct Node* node) {
+    if (node == NULL) {
+        return;
+    }
+    printAnswer(node->parent);
+    sleep(1);
+    printMatrix(node->data, MATRIX_ROWS, MATRIX_COLS);
+    printf("----------------------------------------------------\n");
 }
