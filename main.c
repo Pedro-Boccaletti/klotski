@@ -8,6 +8,9 @@
 
 int checkWanted(char** matrix, int* wanted);
 int test(char**);
+int* locateWanted(char** matrix, char wanted);
+char*** checkAllMoves(char** matrix, int* n);
+void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, int* wanted, int depth);
 
 int main(void)
 {
