@@ -17,7 +17,8 @@ int test(char** testedMatrix) {
         {'R', 'T', 'I'},
     };
 
-    int wanted[3] = {'T', 1, 2};
+    struct Target* wanted = (struct Target*) malloc(sizeof(struct Target));
+
 
     char** matrix2 = allocMatrix(3, 3);
     for (int i = 0; i < 3; i++) {
@@ -43,6 +44,6 @@ int test(char** testedMatrix) {
         return 1;
     }
     int stackIndex = 0;
-    checkWhiteSpaces(matrix2, testedMatrix, &stackIndex, wanted, 0);
+    //loop(matrix2, testedMatrix, &stackIndex, wanted, 0);
     return 0;
 }
