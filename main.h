@@ -25,6 +25,6 @@ int getDistanceValue(char ** matrix, struct Target * target);
 extern int directions[4][2];
 
 #define DEBUG 0
-#define MAX_DEPTH 1000
+#define MAX_DEPTH 3000
 
 #endif //MAIN_H
