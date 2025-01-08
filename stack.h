@@ -4,7 +4,7 @@
 
 #ifndef STACK_H
 #define STACK_H
-#define STACK_SIZE 100000
+#define STACK_SIZE 300000
 char** allocStack();
 void push(char** stack, int* index, char* str);
 char* pop(char** stack, int* index);
