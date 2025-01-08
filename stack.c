@@ -34,9 +34,12 @@ void push(char** stack, int* index, char* str) {
 }
 
 char* pop(char** stack, int* index) {
-    if (stack[*index] != NULL) {
+    if (*index == 0) {
+        return NULL;
+    }
+    if (stack[--(*index)] != NULL) {
         char* str = stack[*index];
-        stack[(*index)--] = NULL;
+        stack[*index] = NULL;
         return str;
     }
     return NULL;
