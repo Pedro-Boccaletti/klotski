@@ -26,13 +26,9 @@ int main(void)
 
     struct Target* wanted = (struct Target*) malloc(sizeof(struct Target));
     wanted->wantedChar = 'D';
-    int locations[2][2] = {
-        {MATRIX_ROWS - 1, 1},
-        {MATRIX_ROWS - 1, 2}
-    };
+    int locations[1][2] = { MATRIX_ROWS - 1, MATRIX_COLS - 1 };
     wanted->locations = locations;
-    wanted->nLocations = 2;
-    printf("a");
+    wanted->nLocations = 1;
     if (!checkWantedAllowed(wanted)) {
         return 1;
     }
