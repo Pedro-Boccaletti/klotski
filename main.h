@@ -18,7 +18,7 @@ int checkWantedAllowed(struct Target* wanted);
 int checkWanted(char** matrix, struct Target* wanted);
 int* locateWanted(char** matrix, char wanted);
 char*** checkAllMoves(char** matrix, int* n);
-void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth);
+void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int o);
 int getDistanceValue(char ** matrix, struct Target * target);
 
 // [row, col]
@@ -26,5 +26,6 @@ extern int directions[4][2];
 
 #define DEBUG 0
 #define MAX_DEPTH 3000
+#define OPTIMIZATION_NUMBER 20
 
 #endif //MAIN_H

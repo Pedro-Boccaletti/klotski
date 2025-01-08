@@ -38,11 +38,7 @@ int main(void)
     if (matrixNode == NULL) {
         return 1;
     }
-    loop(matrixNode, testedStack, &stackIndex, wanted, 0);
-    return 0;
-    if (test(testedStack)) {
-        return 1;
-    }
+    loop(matrixNode, testedStack, &stackIndex, wanted, 0, 0);
     return 0;
 }
 
@@ -54,7 +50,12 @@ int directions[4][2] = {
     {-1, 0}
 };
 
-void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth) {
+void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int o) {
+    if (o > OPTIMIZATION_NUMBER) {
+        deleteMatrix(matrixNode->data, MATRIX_ROWS);
+        free(matrixNode);
+        return;
+    }
     char** matrix = matrixNode->data;
     if (depth >= MAX_DEPTH) {
         if (DEBUG > 1) printf("max depth reached\n");
@@ -69,8 +70,21 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
         printAnswer(matrixNode, 0);
         printf("encontrado com %d movimentos\n", depth);
         exit(0);
-        return;
     }
+    int a = getDistanceValue(matrix, wanted);
+    if (a == -1) {
+        printf("deu BO getDistanceValue\n");
+        exit(-2);
+    }
+    matrixNode->distance = a;
+    if (matrixNode->parent) {
+        if (matrixNode->parent->distance < matrixNode->distance) {
+            o++;
+        } else if (matrixNode->parent->distance > matrixNode->distance) {
+            o = 0;
+        }
+    }
+
     char* str = matrixToString(matrix, MATRIX_ROWS, MATRIX_COLS);
     if (contains(checkedStack, stackIndex, str)) {
         if (DEBUG > 1) printf("debug {str:%s} already in stack\n", str);
@@ -89,7 +103,7 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
     for (int i = 0; i < nMoves; i++) {
         struct Node* node = createMatrixNode(newMatrixes[i]);
         node->parent = matrixNode;
-        loop(node, checkedStack, stackIndex, wanted, depth + 1);
+        loop(node, checkedStack, stackIndex, wanted, depth + 1, o);
     }
     free(newMatrixes);
     deleteMatrix(matrix, MATRIX_ROWS);

@@ -12,6 +12,7 @@
 struct Node {
     char** data;
     struct Node* parent;
+    int distance;
 };
 
 void deleteMatrix(char** matrix, int rows);
