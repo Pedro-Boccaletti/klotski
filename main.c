@@ -61,6 +61,7 @@ int directions[4][2] = {
 void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth) {
     char** matrix = matrixNode->data;
     if (depth >= MAX_DEPTH) {
+        if (DEBUG > 1) printf("max depth reached\n");
         return;
     }
     if (DEBUG) {
@@ -68,7 +69,7 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
         printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
     }
     if (checkWanted(matrix, wanted)) {
-        printf("achou\n");
+        if (DEBUG) printf("achou\n");
         printAnswer(matrixNode, 0);
         printf("encontrado com %d movimentos\n", depth);
         exit(0);
@@ -76,7 +77,7 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
     }
     char* str = matrixToString(matrix, MATRIX_ROWS, MATRIX_COLS);
     if (contains(checkedStack, stackIndex, str)) {
-        if (DEBUG) printf("debug {str:%s} already in stack\n", str);
+        if (DEBUG > 1) printf("debug {str:%s} already in stack\n", str);
         free(str);
         return;
     }
@@ -111,23 +112,23 @@ char*** checkAllMoves(char** matrix, int* n) {
             if (matrix[i][j] == BLANK_SPACE && !(i == checkedRow && j == checkedCol)) {
                 checkedRow = i;
                 checkedCol = j;
-                if (DEBUG) printf("debug {i:%d, j:%d} chamara checkMovesFromAllDirections\n", i, j);
+                if (DEBUG > 1) printf("debug {i:%d, j:%d} chamara checkMovesFromAllDirections\n", i, j);
                 unsigned short int a = checkMovesFromAllDirections(matrix, i, j);
-                if (DEBUG) printf("debug {i:%d, j:%d} checkMovesFromAllDirections retornou %d\n", i, j, a);
+                if (DEBUG > 1) printf("debug {i:%d, j:%d} checkMovesFromAllDirections retornou %d\n", i, j, a);
                 for (int k = 0; k < 4; k++) {
                     if (a & (1 << k)) {
                         int rowDummy = i - directions[k][0];
                         int colDummy = j - directions[k][1];
                         int** shapeCells = allocShapeCells();
                         if (shapeCells == NULL) {
-                            if (DEBUG) { printf("problema alocando shapeCells"); }
+                            if (DEBUG > 1) { printf("problema alocando shapeCells"); }
                             free(allMoves);
                             return NULL;
                         }
                         getShapeCells(matrix, rowDummy, colDummy, matrix[rowDummy][colDummy], shapeCells);
                         char** newMatrix = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
                         if (newMatrix == NULL) {
-                            if (DEBUG) { printf("problema alocando newMatrix"); }
+                            if (DEBUG > 1) { printf("problema alocando newMatrix"); }
                             deleteShapeCells(shapeCells);
                             free(allMoves);
                             return NULL;
@@ -151,7 +152,7 @@ unsigned short int checkMovesFromAllDirections(char** matrix, int i, int j) {
         int rowDummy = i - directions[k][0];
         int colDummy = j - directions[k][1];
         int debuging = checkBoundaries(rowDummy, colDummy);
-        if (DEBUG) {
+        if (DEBUG > 1) {
             printf("rowDummy: %d, colDummy: %d\n", rowDummy, colDummy);
             printf("checkBoundaries: %d\t%c\n", debuging, debuging ? matrix[rowDummy][colDummy] : ' ');
         }
@@ -160,7 +161,7 @@ unsigned short int checkMovesFromAllDirections(char** matrix, int i, int j) {
             possibleDirections |= possible << k;
         }
     }
-    if (DEBUG) {
+    if (DEBUG > 1) {
         printf("possibleDirections: %d\n", possibleDirections);
     }
     return possibleDirections;

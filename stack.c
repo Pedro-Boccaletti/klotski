@@ -23,7 +23,7 @@ void push(char** stack, int* index, char* str) {
         exit(-1);
     }
     if (stack[*index] == NULL) {
-        if (DEBUG) {
+        if (DEBUG > 1) {
             printf("debug {i:%d, str:%s}\n", *index, str);
         }
         stack[(*index)++] = str;
@@ -35,6 +35,7 @@ void push(char** stack, int* index, char* str) {
 
 char* pop(char** stack, int* index) {
     if (*index == 0) {
+        if (DEBUG > 1) printf("Stack is empty\n");
         return NULL;
     }
     if (stack[--(*index)] != NULL) {
