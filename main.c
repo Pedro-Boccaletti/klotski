@@ -93,7 +93,7 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
         return;
     }
     push(checkedStack, stackIndex, str);
-
+    //free(str);
     // check all possible moves
     int nMoves = 0;
     char*** newMatrixes = checkAllMoves(matrix, &nMoves);
@@ -105,6 +105,8 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
     free(newMatrixes);
     deleteMatrix(matrix, MATRIX_ROWS);
     free(matrixNode);
+    //char* popped = pop(checkedStack, stackIndex);
+    //free(popped);
 }
 
 char*** checkAllMoves(char** matrix, int* n) {
