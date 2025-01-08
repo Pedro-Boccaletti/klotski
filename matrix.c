@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-/*
+
 const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'D', 'D', BLANK_SPACE, 'P', 'P', 'a'},
     {'D', 'D', BLANK_SPACE, 'P', 'b', 'M'},
@@ -15,7 +15,7 @@ const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'T', 'T', 'O', 'e', 'C', 'N'},
     {'T', 'O', 'O', 'f', 'C', 'N'}
 };
-*/
+/*
 const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'a', 'D', 'D', 'm'},
     {'b', 'D', 'D', 'l'},
@@ -23,7 +23,7 @@ const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'d', 'f', 'i', 'j'},
     {'e', BLANK_SPACE, BLANK_SPACE, 'n'}
 };
-
+*/
 char** allocMatrix(int rows, int cols) {
     size_t charSize = sizeof(char);
     size_t rowSize = cols * charSize;
