@@ -62,13 +62,14 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
         return;
     }
     if (DEBUG) {
-        printf("checkWhiteSpaces ultimo index do stack = %d\n", *stackIndex);
+        printf("index do stack = %d\n", *stackIndex);
         printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
     }
     if (checkWanted(matrix, wanted)) {
         if (DEBUG) printf("achou\n");
         printAnswer(matrixNode, 0);
         printf("encontrado com %d movimentos\n", depth);
+        printf("stack terminou no index %d\n", *stackIndex);
         exit(0);
     }
     int a = getDistanceValue(matrix, wanted);
@@ -92,10 +93,6 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
         return;
     }
     push(checkedStack, stackIndex, str);
-    int* a = locateWanted(matrix, wanted->wantedChar);
-    //int distx = a[0] - wanted[1];
-    //int disty = a[1] - wanted[2];
-    free(a);
 
     // check all possible moves
     int nMoves = 0;
