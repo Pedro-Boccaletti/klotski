@@ -19,6 +19,7 @@ int checkWanted(char** matrix, struct Target* wanted);
 int* locateWanted(char** matrix, char wanted);
 char*** checkAllMoves(char** matrix, int* n);
 void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth);
+int getDistanceValue(char ** matrix, struct Target * target);
 
 // [row, col]
 extern int directions[4][2];

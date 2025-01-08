@@ -202,6 +202,31 @@ int* locateWanted(char** matrix, char wanted) {
     return NULL;
 }
 
+int getDistanceValue(char** matrix, struct Target* wanted) {
+    int distance = 0;
+    int* l = locateWanted(matrix, wanted->wantedChar);
+    if (l == NULL) {
+        printf("error allocating locateWanted in getDistanceValue\n");
+        return -1;
+    }
+    int** shapeCells = allocShapeCells();
+    if (shapeCells == NULL) {
+        free(l);
+        printf("error allocating shapeCells in getDistanceValue\n");
+        return -1;
+    }
+    getShapeCells(matrix, l[0], l[1], wanted->wantedChar, shapeCells);
+    int** initRef = shapeCells;
+    for (; *shapeCells; shapeCells++) {
+        for (int i = 0; i < wanted->nLocations; i++) {
+            distance += abs((*shapeCells)[0] - wanted->locations[i][0]) + abs((*shapeCells)[1] - wanted->locations[i][1]);
+        }
+    }
+    deleteShapeCells(initRef);
+    free(l);
+    return distance;
+}
+
 // https://stackoverflow.com/questions/9846920/define-array-in-c
 // https://www.geeksforgeeks.org/c-user-defined-data-types/
 // https://www.geeksforgeeks.org/void-pointer-c-cpp/
