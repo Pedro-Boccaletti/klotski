@@ -96,6 +96,8 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
         loop(node, checkedStack, stackIndex, wanted, depth + 1);
     }
     free(newMatrixes);
+    deleteMatrix(matrix, MATRIX_ROWS);
+    free(matrixNode);
 }
 
 char*** checkAllMoves(char** matrix, int* n) {
