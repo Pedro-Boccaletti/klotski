@@ -8,6 +8,7 @@
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 6
 #define BLANK_SPACE '-'
+#define BLANK_SPACE_AMOUNT 2
 
 struct Node {
     char** data;

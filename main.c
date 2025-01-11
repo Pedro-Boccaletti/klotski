@@ -4,7 +4,10 @@
 #include "matrix.h"
 #include "shape.h"
 #include "stack.h"
+#include <time.h>
 
+
+time_t start;
 
 int test(char**);
 
@@ -14,6 +17,7 @@ int main(void)
     if (matrix == NULL) {
         return 1;
     }
+    start = time(NULL);
     for (int i = 0; i < MATRIX_ROWS; i++) {
         for (int j = 0; j < MATRIX_COLS; j++) {
             setMatrixValue(matrix, i, j, initialMatrix[i][j]);
@@ -50,8 +54,9 @@ int directions[4][2] = {
     {-1, 0}
 };
 
-void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int o) {
-    if (o > OPTIMIZATION_NUMBER) {
+// função para fazer o loop recursivamente
+void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int optimizationNumber) {
+    if (optimizationNumber > OPTIMIZATION_NUMBER) {
         deleteMatrix(matrixNode->data, MATRIX_ROWS);
         free(matrixNode);
         return;
@@ -64,25 +69,31 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
     if (DEBUG) {
         printf("index do stack = %d\n", *stackIndex);
         printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
+        time_t now = time(NULL);
+        printf("tempo de execução: %ld segundos\n", now - start);
     }
+    time_t now = time(NULL);
+    printf("tempo de execução: %ld segundos\n", now - start);
     if (checkWanted(matrix, wanted)) {
         if (DEBUG) printf("achou\n");
-        printAnswer(matrixNode, 0);
+        printAnswer(matrixNode, SECONDS_PRINT_ANSWER);
         printf("encontrado com %d movimentos\n", depth);
         printf("stack terminou no index %d\n", *stackIndex);
+        time_t end = time(NULL);
+        printf("tempo de execução: %ld segundos\n", end - start);
         exit(0);
     }
-    int a = getDistanceValue(matrix, wanted);
-    if (a == -1) {
+    int distance = getDistanceValue(matrix, wanted);
+    if (distance == -1) {
         printf("deu BO getDistanceValue\n");
         exit(-2);
     }
-    matrixNode->distance = a;
+    matrixNode->distance = distance;
     if (matrixNode->parent) {
         if (matrixNode->parent->distance < matrixNode->distance) {
-            o++;
+            optimizationNumber++;
         } else if (matrixNode->parent->distance > matrixNode->distance) {
-            o = 0;
+            optimizationNumber = 0;
         }
     }
 
@@ -100,7 +111,7 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
     for (int i = 0; i < nMoves; i++) {
         struct Node* node = createMatrixNode(newMatrixes[i]);
         node->parent = matrixNode;
-        loop(node, checkedStack, stackIndex, wanted, depth + 1, o);
+        loop(node, checkedStack, stackIndex, wanted, depth + 1, optimizationNumber);
     }
     free(newMatrixes);
     deleteMatrix(matrix, MATRIX_ROWS);
@@ -109,25 +120,26 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
     //free(popped);
 }
 
+// check all possible moves, returns a pointer to a pointer of the new matrixes created and places the number of matrixes created in the pointer n
 char*** checkAllMoves(char** matrix, int* n) {
-    size_t size = 8 * sizeof(char**);
+    // allocate memory for the pointer to the pointer of the new matrixes
+    size_t size = 4 * BLANK_SPACE_AMOUNT * sizeof(char**);
     char*** allMoves = (char***) malloc(size);
     if (allMoves == NULL) {
         return NULL;
     }
 
-    int checkedRow = -1;
-    int checkedCol = -1;
     for (int i = 0; i < MATRIX_ROWS; i++) {
         for (int j = 0; j < MATRIX_COLS; j++) {
-            if (matrix[i][j] == BLANK_SPACE && !(i == checkedRow && j == checkedCol)) {
-                checkedRow = i;
-                checkedCol = j;
+            if (matrix[i][j] == BLANK_SPACE) {
                 if (DEBUG > 1) printf("debug {i:%d, j:%d} chamara checkMovesFromAllDirections\n", i, j);
-                unsigned short int a = checkMovesFromAllDirections(matrix, i, j);
-                if (DEBUG > 1) printf("debug {i:%d, j:%d} checkMovesFromAllDirections retornou %d\n", i, j, a);
+                unsigned short int possibleMoves = checkMovesFromAllDirections(matrix, i, j);
+                if (DEBUG > 1) printf("debug {i:%d, j:%d} checkMovesFromAllDirections retornou %d\n", i, j, possibleMoves);
+                // check all directions
                 for (int k = 0; k < 4; k++) {
-                    if (a & (1 << k)) {
+                    // if the direction is possible (bit is set)
+                    if (possibleMoves & (1 << k)) {
+                        // get the shape from the possible direction
                         int rowDummy = i - directions[k][0];
                         int colDummy = j - directions[k][1];
                         int** shapeCells = allocShapeCells();
@@ -137,6 +149,8 @@ char*** checkAllMoves(char** matrix, int* n) {
                             return NULL;
                         }
                         getShapeCells(matrix, rowDummy, colDummy, matrix[rowDummy][colDummy], shapeCells);
+
+                        // alloc a new matrix
                         char** newMatrix = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
                         if (newMatrix == NULL) {
                             if (DEBUG > 1) { printf("problema alocando newMatrix"); }
@@ -144,9 +158,12 @@ char*** checkAllMoves(char** matrix, int* n) {
                             free(allMoves);
                             return NULL;
                         }
+                        //copy the current matrix to the new matrix and move the shape
                         copyMatrix(matrix, newMatrix, MATRIX_ROWS, MATRIX_COLS);
                         moveShape(newMatrix, shapeCells, matrix[rowDummy][colDummy], k);
+                        // free the shape cells
                         deleteShapeCells(shapeCells);
+                        // add the new matrix to the allMoves pointer and inc n
                         allMoves[(*n)++] = newMatrix;
                     }
                 }
@@ -156,19 +173,23 @@ char*** checkAllMoves(char** matrix, int* n) {
     return allMoves;
 }
 
-// return an array of pointers related to all directions
+// return a bit mask of pointers related to all directions (bit 0 -> right, bit 1 -> down, bit 2 -> left, bit 3 -> up)
+// i and j are the row and column of the blank space
 unsigned short int checkMovesFromAllDirections(char** matrix, int i, int j) {
     unsigned short int possibleDirections = 0;
+    // check all directions
     for (int k = 0; k < 4; k++) {
         int rowDummy = i - directions[k][0];
         int colDummy = j - directions[k][1];
-        int debuging = checkBoundaries(rowDummy, colDummy);
         if (DEBUG > 1) {
+            int debuging = checkBoundaries(rowDummy, colDummy);
             printf("rowDummy: %d, colDummy: %d\n", rowDummy, colDummy);
             printf("checkBoundaries: %d\t%c\n", debuging, debuging ? matrix[rowDummy][colDummy] : ' ');
         }
+        // if the row and column are within the matrix boundaries and the cell is not a blank space
         if (checkBoundaries(rowDummy, colDummy) && matrix[rowDummy][colDummy] != BLANK_SPACE) {
             int possible = checkShapeCanMove(matrix, rowDummy, colDummy, k);
+            // set the bit of the direction if the shape can move in that direction
             possibleDirections |= possible << k;
         }
     }
@@ -178,6 +199,7 @@ unsigned short int checkMovesFromAllDirections(char** matrix, int i, int j) {
     return possibleDirections;
 }
 
+// check if the wanted char is in the wanted locations
 int checkWanted(char** matrix, struct Target* wanted) {
     for (int i = 0; i < wanted->nLocations; i++) {
         if (matrix[wanted->locations[i][0]][wanted->locations[i][1]] != wanted->wantedChar) {
@@ -187,6 +209,7 @@ int checkWanted(char** matrix, struct Target* wanted) {
     return 1;
 }
 
+// check if the wanted locations are within the matrix boundaries
 int checkWantedAllowed(struct Target* wanted) {
     for (int i = 0; i < wanted->nLocations; i++) {
         if (!checkBoundaries(wanted->locations[i][0], wanted->locations[i][1])) {
@@ -196,12 +219,14 @@ int checkWantedAllowed(struct Target* wanted) {
     return 1;
 }
 
-int* locateWanted(char** matrix, char wanted) {
+// return the first cell location of the wanted char found in the matrix (mainly used to then get all the shape cells)
+int* locateChar(char** matrix, char wanted) {
     for (int i = MATRIX_ROWS - 1; i >= 0; i--) {
         for (int j = MATRIX_COLS - 1; j >= 0; j--) {
             if (matrix[i][j] == wanted) {
                 int* local = (int*) malloc(2 * sizeof(int));
                 if (local == NULL) {
+                    printf("problem allocating memory for local in locateWanted\n");
                     return NULL;
                 }
                 local[0] = i;
@@ -213,9 +238,10 @@ int* locateWanted(char** matrix, char wanted) {
     return NULL;
 }
 
+// return the sum of the distances of the shape cells to the wanted locations
 int getDistanceValue(char** matrix, struct Target* wanted) {
     int distance = 0;
-    int* l = locateWanted(matrix, wanted->wantedChar);
+    int* l = locateChar(matrix, wanted->wantedChar);
     if (l == NULL) {
         printf("error allocating locateWanted in getDistanceValue\n");
         return -1;

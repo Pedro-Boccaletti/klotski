@@ -15,7 +15,9 @@ const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'T', 'T', 'O', 'e', 'C', 'N'},
     {'T', 'O', 'O', 'f', 'C', 'N'}
 };
+
 /*
+ *this is the easy matrix
 const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'a', 'D', 'D', 'm'},
     {'b', 'D', 'D', 'l'},
@@ -24,6 +26,7 @@ const char initialMatrix[MATRIX_ROWS][MATRIX_COLS] = {
     {'e', BLANK_SPACE, BLANK_SPACE, 'n'}
 };
 */
+
 char** allocMatrix(int rows, int cols) {
     size_t charSize = sizeof(char);
     size_t rowSize = cols * charSize;
