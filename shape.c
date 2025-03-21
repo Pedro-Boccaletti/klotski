@@ -10,7 +10,7 @@
 
 // allocates memory for the shape cells
 int** allocShapeCells() {
-    size_t matrixSize = MATRIX_ROWS * MATRIX_COLS;
+    int matrixSize = MATRIX_ROWS * MATRIX_COLS;
     int** temp = (int**) malloc(matrixSize * sizeof(int*));
     for (int i = 0; i < matrixSize; i++) {
         temp[i] = NULL;

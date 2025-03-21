@@ -30,7 +30,7 @@ int main(void)
 
     struct Target* wanted = (struct Target*) malloc(sizeof(struct Target));
     wanted->wantedChar = 'D';
-    int locations[1][2] = { MATRIX_ROWS - 1, MATRIX_COLS - 1 };
+    int locations[1][2] = { { MATRIX_ROWS - 1, MATRIX_COLS - 1 } };
     wanted->locations = locations;
     wanted->nLocations = 1;
     if (!checkWantedAllowed(wanted)) {
@@ -72,13 +72,10 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
         time_t now = time(NULL);
         printf("tempo de execução: %ld segundos\n", now - start);
     }
-    time_t now = time(NULL);
-    printf("tempo de execução: %ld segundos\n", now - start);
     if (checkWanted(matrix, wanted)) {
         if (DEBUG) printf("achou\n");
         printAnswer(matrixNode, SECONDS_PRINT_ANSWER);
         printf("encontrado com %d movimentos\n", depth);
-        printf("stack terminou no index %d\n", *stackIndex);
         time_t end = time(NULL);
         printf("tempo de execução: %ld segundos\n", end - start);
         exit(0);
