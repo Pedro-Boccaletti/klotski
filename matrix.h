@@ -15,7 +15,6 @@ typedef struct MatrixNode {
     char** data;
     struct MatrixNode* parent;
     int distance;
-};
 } MatrixNode;
 
 void deleteMatrix(char** matrix, int rows);
