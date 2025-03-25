@@ -119,7 +119,7 @@ void copyMatrix(char** matrix, char** newMatrix, int rows, int cols) {
 }
 
 MatrixNode* createMatrixNode(char** matrix) {
-    MatrixNode* matrixNode = (struct Node*) malloc(sizeof(MatrixNode));
+    MatrixNode* matrixNode = (MatrixNode*) malloc(sizeof(MatrixNode));
     if (matrixNode == NULL) {
         return NULL;
     }
