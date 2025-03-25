@@ -23,7 +23,7 @@ int main(void)
             setMatrixValue(matrix, i, j, initialMatrix[i][j]);
         }
     }
-    char** testedStack = allocStack();
+    uint32_t* testedStack = allocStack();
     if (testedStack == NULL) {
         return 1;
     }
@@ -55,7 +55,7 @@ int directions[4][2] = {
 };
 
 // função para fazer o loop recursivamente
-void loop(MatrixNode* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int optimizationNumber) {
+void loop(MatrixNode* matrixNode, uint32_t* checkedStack, int* stackIndex, struct Target* wanted, int depth, int optimizationNumber) {
     if (optimizationNumber > OPTIMIZATION_NUMBER) {
         deleteMatrix(matrixNode->data, MATRIX_ROWS);
         free(matrixNode);
@@ -66,8 +66,10 @@ void loop(MatrixNode* matrixNode, char** checkedStack, int* stackIndex, struct T
         if (DEBUG > 1) printf("max depth reached\n");
         return;
     }
-    if (DEBUG) {
+    if (DEBUG > 1) {
         printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
+    }
+    if (DEBUG) {
         time_t now = time(NULL);
         printf("tempo de execução: %ld segundos\n", now - start);
     }
@@ -93,14 +95,12 @@ void loop(MatrixNode* matrixNode, char** checkedStack, int* stackIndex, struct T
         }
     }
 
-    char* str = matrixToString(matrix, MATRIX_ROWS, MATRIX_COLS);
-    if (contains(checkedStack, stackIndex, str)) {
-        if (DEBUG > 1) printf("debug {str:%s} already in stack\n", str);
-        free(str);
+    uint32_t hash = hashMatrix(matrixNode, MATRIX_ROWS, MATRIX_COLS);
+    if (contains(checkedStack, stackIndex, hash)) {
+        if (DEBUG > 1) printf("debug {hash:%d} already in stack\n", hash);
         return;
     }
-    push(checkedStack, stackIndex, str);
-    //free(str);
+    push(checkedStack, stackIndex, hash);
     // check all possible moves
     int nMoves = 0;
     char*** newMatrices = checkAllMoves(matrix, &nMoves);
@@ -112,8 +112,6 @@ void loop(MatrixNode* matrixNode, char** checkedStack, int* stackIndex, struct T
     free(newMatrices);
     deleteMatrix(matrix, MATRIX_ROWS);
     free(matrixNode);
-    //char* popped = pop(checkedStack, stackIndex);
-    //free(popped);
 }
 
 // check all possible moves, returns a pointer to a pointer of the new matrixes created and places the number of matrixes created in the pointer n

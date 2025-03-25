@@ -5,9 +5,10 @@
 #ifndef STACK_H
 #define STACK_H
 #define STACK_SIZE 300000
-char** allocStack();
-void push(char** stack, int* index, char* str);
-char* pop(char** stack, int* index);
-int contains(char** stack, int* index, char* str);
+#include <stdint.h>
+uint32_t* allocStack();
+void push(uint32_t* stack, int* index, uint32_t hash);
+uint32_t pop(uint32_t* stack, int* index);
+int contains(uint32_t* stack, int* index, uint32_t hash);
 
 #endif //STACK_H

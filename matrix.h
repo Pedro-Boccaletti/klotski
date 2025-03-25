@@ -10,13 +10,17 @@
 #define BLANK_SPACE '-'
 #define BLANK_SPACE_AMOUNT 2
 
+#define FNV_OFFSET_BASIS 2166136261
+#define FNV_PRIME 16777619
+#include <stdint.h>
 
 typedef struct MatrixNode {
     char** data;
     struct MatrixNode* parent;
     int distance;
-};
 } MatrixNode;
+
+extern uint32_t hashMatrix(MatrixNode* matrixNode, int rows, int cols);
 
 void deleteMatrix(char** matrix, int rows);
 
@@ -31,8 +35,6 @@ void printMatrix(char** matrix, int rows, int cols);
 int checkBoundaries(int row, int col);
 
 void copyMatrix(char** matrix, char** newMatrix, int rows, int cols);
-
-char* matrixToString(char** matrix, int rows, int cols);
 
 MatrixNode* createMatrixNode(char** matrix);
 

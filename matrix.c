@@ -59,6 +59,18 @@ void setMatrixValue(char** matrix, int row, int col, char value) {
     *(rowPointer + col) = value;
 }
 
+// hash function for the matrix
+uint32_t hashMatrix(MatrixNode* matrixNode, int rows, int cols) {
+    uint32_t hash = FNV_OFFSET_BASIS;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            hash ^= matrixNode->data[i][j];
+            hash *= FNV_PRIME;
+        }
+    }
+    return hash;
+}
+
 void printMatrix(char** matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -72,37 +84,6 @@ void printMatrix(char** matrix, int rows, int cols) {
         }
         printf("\n");
     }
-}
-
-// creates a unique string related to this state, to be compared latter
-char* matrixToString(char** matrix, int rows, int cols) {
-    char* str = (char*) malloc((rows * cols * sizeof(char) + 1));
-    if (str == NULL) {
-        printf("problem allocating memory for str\n");
-        exit(-1);
-        return NULL;
-    }
-    char* strPointer = str;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            char c = matrix[i][j];
-            if (c >= 'a' && c <= 'z') {
-                c = 'a';
-            }
-            switch (c) {
-                case BLANK_SPACE: c = '0'; break;
-                case 'a': c = 'I'; break;
-                case 'O': c = 'M'; break;
-                case 'T': c = 'P'; break;
-                case 'N': c = 'C'; break;
-                default: break;
-            }
-
-            *strPointer++ = c;
-        }
-    }
-    *strPointer = '\0';
-    return str;
 }
 
 // check if a row and column are within the boundaries of the matrix
