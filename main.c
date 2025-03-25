@@ -38,7 +38,7 @@ int main(void)
     }
     int stackIndex = 0;
 
-    struct Node* matrixNode = createMatrixNode(matrix);
+    MatrixNode* matrixNode = createMatrixNode(matrix);
     if (matrixNode == NULL) {
         return 1;
     }
@@ -55,7 +55,7 @@ int directions[4][2] = {
 };
 
 // função para fazer o loop recursivamente
-void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int optimizationNumber) {
+void loop(MatrixNode* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int optimizationNumber) {
     if (optimizationNumber > OPTIMIZATION_NUMBER) {
         deleteMatrix(matrixNode->data, MATRIX_ROWS);
         free(matrixNode);
@@ -67,7 +67,6 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
         return;
     }
     if (DEBUG) {
-        printf("index do stack = %d\n", *stackIndex);
         printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
         time_t now = time(NULL);
         printf("tempo de execução: %ld segundos\n", now - start);
@@ -104,13 +103,13 @@ void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct 
     //free(str);
     // check all possible moves
     int nMoves = 0;
-    char*** newMatrixes = checkAllMoves(matrix, &nMoves);
+    char*** newMatrices = checkAllMoves(matrix, &nMoves);
     for (int i = 0; i < nMoves; i++) {
-        struct Node* node = createMatrixNode(newMatrixes[i]);
+        MatrixNode* node = createMatrixNode(newMatrices[i]);
         node->parent = matrixNode;
         loop(node, checkedStack, stackIndex, wanted, depth + 1, optimizationNumber);
     }
-    free(newMatrixes);
+    free(newMatrices);
     deleteMatrix(matrix, MATRIX_ROWS);
     free(matrixNode);
     //char* popped = pop(checkedStack, stackIndex);

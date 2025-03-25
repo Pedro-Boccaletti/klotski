@@ -118,8 +118,8 @@ void copyMatrix(char** matrix, char** newMatrix, int rows, int cols) {
     }
 }
 
-struct Node* createMatrixNode(char** matrix) {
-    struct Node* matrixNode = (struct Node*) malloc(sizeof(struct Node));
+MatrixNode* createMatrixNode(char** matrix) {
+    MatrixNode* matrixNode = (struct Node*) malloc(sizeof(MatrixNode));
     if (matrixNode == NULL) {
         return NULL;
     }
@@ -128,7 +128,7 @@ struct Node* createMatrixNode(char** matrix) {
     return matrixNode;
 }
 
-void printAnswer(struct Node* node, unsigned int seconds) {
+void printAnswer(MatrixNode* node, unsigned int seconds) {
     if (node == NULL) {
         return;
     }

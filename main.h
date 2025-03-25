@@ -18,7 +18,7 @@ int checkWantedAllowed(struct Target* wanted);
 int checkWanted(char** matrix, struct Target* wanted);
 int* locateChar(char** matrix, char wanted);
 char*** checkAllMoves(char** matrix, int* n);
-void loop(struct Node* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int optimizationNumber);
+void loop(MatrixNode* matrixNode, char** checkedStack, int* stackIndex, struct Target* wanted, int depth, int optimizationNumber);
 int getDistanceValue(char ** matrix, struct Target * target);
 
 // [row, col]

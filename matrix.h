@@ -10,11 +10,13 @@
 #define BLANK_SPACE '-'
 #define BLANK_SPACE_AMOUNT 2
 
-struct Node {
+
+typedef struct MatrixNode {
     char** data;
-    struct Node* parent;
+    struct MatrixNode* parent;
     int distance;
 };
+} MatrixNode;
 
 void deleteMatrix(char** matrix, int rows);
 
@@ -32,9 +34,9 @@ void copyMatrix(char** matrix, char** newMatrix, int rows, int cols);
 
 char* matrixToString(char** matrix, int rows, int cols);
 
-struct Node* createMatrixNode(char** matrix);
+MatrixNode* createMatrixNode(char** matrix);
 
-void printAnswer(struct Node* node, unsigned int seconds);
+void printAnswer(MatrixNode* node, unsigned int seconds);
 
 #endif //MATRIX_H
 
