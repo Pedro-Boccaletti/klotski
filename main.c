@@ -71,7 +71,7 @@ void loop(MatrixNode* matrixNode, uint32_t* checkedStack, int* stackIndex, struc
     }
     if (DEBUG) {
         time_t now = time(NULL);
-        printf("tempo de execução: %ld segundos\n", now - start);
+        printf("tempo de execução: %ld segundos\t|\tstackIndex: %d\n", now - start, *stackIndex);
     }
     if (checkWanted(matrix, wanted)) {
         if (DEBUG) printf("achou\n");
