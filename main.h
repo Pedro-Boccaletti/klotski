@@ -24,7 +24,7 @@ int getDistanceValue(char ** matrix, struct Target * target);
 // [row, col]
 extern int directions[4][2];
 
-#define DEBUG 0
+#define DEBUG 1
 #define MAX_DEPTH 1500
 #define OPTIMIZATION_NUMBER 2
 #define SECONDS_PRINT_ANSWER 0
