@@ -6,6 +6,8 @@
 #include "stack.h"
 #include <time.h>
 
+#include "binarysearchtree.h"
+
 
 time_t start;
 
@@ -38,11 +40,13 @@ int main(void)
     }
     int stackIndex = 0;
 
+    BinarySearchTree* bst = bstCreate(sizeof(uint32_t));
+
     MatrixNode* matrixNode = createMatrixNode(matrix);
     if (matrixNode == NULL) {
         return 1;
     }
-    loop(matrixNode, testedStack, &stackIndex, wanted, 0, 0);
+    loop(matrixNode, bst, wanted, 0, 0);
     return 0;
 }
 
@@ -55,7 +59,7 @@ int directions[4][2] = {
 };
 
 // função para fazer o loop recursivamente
-void loop(MatrixNode* matrixNode, uint32_t* checkedStack, int* stackIndex, struct Target* wanted, int depth, int optimizationNumber) {
+void loop(MatrixNode* matrixNode, BinarySearchTree* bst, struct Target* wanted, int depth, int optimizationNumber) {
     if (optimizationNumber > OPTIMIZATION_NUMBER) {
         deleteMatrix(matrixNode->data, MATRIX_ROWS);
         free(matrixNode);
@@ -71,7 +75,7 @@ void loop(MatrixNode* matrixNode, uint32_t* checkedStack, int* stackIndex, struc
     }
     if (DEBUG) {
         time_t now = time(NULL);
-        printf("tempo de execução: %ld segundos\t|\tstackIndex: %d\n", now - start, *stackIndex);
+        printf("tempo de execução: %ld segundos\t|\tbstSize: %d\n", now - start, bst->size);
     }
     if (checkWanted(matrix, wanted)) {
         if (DEBUG) printf("achou\n");
@@ -96,27 +100,27 @@ void loop(MatrixNode* matrixNode, uint32_t* checkedStack, int* stackIndex, struc
     }
 
     uint32_t hash = hashMatrix(matrixNode, MATRIX_ROWS, MATRIX_COLS);
-    if (contains(checkedStack, stackIndex, hash)) {
-        if (DEBUG > 1) printf("debug {hash:%d} already in stack\n", hash);
+    if (bstFind(bst, hash)) {
+        if (DEBUG > 1) printf("debug {hash:%d} already in tree\n", hash);
         return;
     }
-    push(checkedStack, stackIndex, hash);
+    bstAdd(bst, hash);
     // check all possible moves
     int nMoves = 0;
     char*** newMatrices = checkAllMoves(matrix, &nMoves);
     for (int i = 0; i < nMoves; i++) {
         MatrixNode* node = createMatrixNode(newMatrices[i]);
         node->parent = matrixNode;
-        loop(node, checkedStack, stackIndex, wanted, depth + 1, optimizationNumber);
+        loop(node, bst, wanted, depth + 1, optimizationNumber);
     }
     free(newMatrices);
     deleteMatrix(matrix, MATRIX_ROWS);
     free(matrixNode);
 }
 
-// check all possible moves, returns a pointer to a pointer of the new matrixes created and places the number of matrixes created in the pointer n
+// check all possible moves, returns a pointer to a pointer of the new matrices created and places the number of matrices created in the pointer n
 char*** checkAllMoves(char** matrix, int* n) {
-    // allocate memory for the pointer to the pointer of the new matrixes
+    // allocate memory for the pointer to the pointer of the new matrices
     size_t size = 4 * BLANK_SPACE_AMOUNT * sizeof(char**);
     char*** allMoves = (char***) malloc(size);
     if (allMoves == NULL) {

@@ -12,4 +12,6 @@ add_executable(labProg main.c
         main.h
         stack.c
         stack.h
+        binarysearchtree.c
+        binarysearchtree.h
 )
