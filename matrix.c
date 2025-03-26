@@ -64,7 +64,19 @@ uint32_t hashMatrix(MatrixNode* matrixNode, int rows, int cols) {
     uint32_t hash = FNV_OFFSET_BASIS;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            hash ^= matrixNode->data[i][j];
+            char c = matrixNode->data[i][j];
+            if (c >= 'a' && c <= 'z') {
+                c = 'a';
+            }
+            switch (c) {
+                case BLANK_SPACE: c = '0'; break;
+                case 'a': c = 'I'; break;
+                case 'O': c = 'M'; break;
+                case 'T': c = 'P'; break;
+                case 'N': c = 'C'; break;
+                default: break;
+            }
+            hash ^= c;
             hash *= FNV_PRIME;
         }
     }
