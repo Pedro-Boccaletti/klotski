@@ -11,8 +11,6 @@
 
 time_t start;
 
-int test(char**);
-
 int main(void)
 {
     char** matrix = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
@@ -62,18 +60,11 @@ void loop(MatrixNode* matrixNode, BinarySearchTree* bst, struct Target* wanted, 
     }
     char** matrix = matrixNode->data;
     if (depth >= MAX_DEPTH) {
-        if (DEBUG > 1) printf("max depth reached\n");
         return;
     }
-    if (DEBUG > 1) {
-        printMatrix(matrix, MATRIX_ROWS, MATRIX_COLS);
-    }
-    if (DEBUG) {
-        time_t now = time(NULL);
-        printf("tempo de execução: %ld segundos\t|\tbstSize: %d\n", now - start, bst->size);
-    }
+    time_t now = time(NULL);
+    printf("tempo de execução: %ld segundos\t|\tbstSize: %d\n", now - start, bst->size);
     if (checkWanted(matrix, wanted)) {
-        if (DEBUG) printf("achou\n");
         printAnswer(matrixNode, SECONDS_PRINT_ANSWER);
         printf("encontrado com %d movimentos\n", depth);
         time_t end = time(NULL);
@@ -96,7 +87,6 @@ void loop(MatrixNode* matrixNode, BinarySearchTree* bst, struct Target* wanted, 
 
     uint32_t hash = hashMatrix(matrixNode, MATRIX_ROWS, MATRIX_COLS);
     if (bstFind(bst, hash)) {
-        if (DEBUG > 1) printf("debug {hash:%d} already in tree\n", hash);
         return;
     }
     bstAdd(bst, hash);
@@ -125,9 +115,7 @@ char*** checkAllMoves(char** matrix, int* n) {
     for (int i = 0; i < MATRIX_ROWS; i++) {
         for (int j = 0; j < MATRIX_COLS; j++) {
             if (matrix[i][j] == BLANK_SPACE) {
-                if (DEBUG > 1) printf("debug {i:%d, j:%d} chamara checkMovesFromAllDirections\n", i, j);
                 unsigned short int possibleMoves = checkMovesFromAllDirections(matrix, i, j);
-                if (DEBUG > 1) printf("debug {i:%d, j:%d} checkMovesFromAllDirections retornou %d\n", i, j, possibleMoves);
                 // check all directions
                 for (int k = 0; k < 4; k++) {
                     // if the direction is possible (bit is set)
@@ -137,7 +125,6 @@ char*** checkAllMoves(char** matrix, int* n) {
                         int colDummy = j - directions[k][1];
                         int** shapeCells = allocShapeCells();
                         if (shapeCells == NULL) {
-                            if (DEBUG > 1) { printf("problema alocando shapeCells"); }
                             free(allMoves);
                             return NULL;
                         }
@@ -146,7 +133,6 @@ char*** checkAllMoves(char** matrix, int* n) {
                         // alloc a new matrix
                         char** newMatrix = allocMatrix(MATRIX_ROWS, MATRIX_COLS);
                         if (newMatrix == NULL) {
-                            if (DEBUG > 1) { printf("problema alocando newMatrix"); }
                             deleteShapeCells(shapeCells);
                             free(allMoves);
                             return NULL;
@@ -174,20 +160,12 @@ unsigned short int checkMovesFromAllDirections(char** matrix, int i, int j) {
     for (int k = 0; k < 4; k++) {
         int rowDummy = i - directions[k][0];
         int colDummy = j - directions[k][1];
-        if (DEBUG > 1) {
-            int debuging = checkBoundaries(rowDummy, colDummy);
-            printf("rowDummy: %d, colDummy: %d\n", rowDummy, colDummy);
-            printf("checkBoundaries: %d\t%c\n", debuging, debuging ? matrix[rowDummy][colDummy] : ' ');
-        }
         // if the row and column are within the matrix boundaries and the cell is not a blank space
         if (checkBoundaries(rowDummy, colDummy) && matrix[rowDummy][colDummy] != BLANK_SPACE) {
             int possible = checkShapeCanMove(matrix, rowDummy, colDummy, k);
             // set the bit of the direction if the shape can move in that direction
             possibleDirections |= possible << k;
         }
-    }
-    if (DEBUG > 1) {
-        printf("possibleDirections: %d\n", possibleDirections);
     }
     return possibleDirections;
 }

@@ -73,7 +73,6 @@ void getShapeCells(char** matrix, int i, int j, char dummy, int** shapeCells) {
         if (shapeCells[k] == NULL) {
             shapeCells[k] = (int*) malloc(2 * sizeof(int));
             if (shapeCells[k] == NULL) {
-                if (DEBUG) { printf("problema alocando shapeCells[k]"); }
                 return;
             }
             shapeCells[k][0] = i;
@@ -96,7 +95,6 @@ void getShapeCells(char** matrix, int i, int j, char dummy, int** shapeCells) {
 int checkShapeCanMove(char** matrix, int i, int j, int direction) {
     int** shapeCells = allocShapeCells();
     if (shapeCells == NULL) {
-        if (DEBUG) { printf("problema alocando shapeCells"); }
         return 0;
     }
     char dummy = matrix[i][j];

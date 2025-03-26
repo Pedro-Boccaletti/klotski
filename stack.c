@@ -24,7 +24,6 @@ void push(uint32_t* stack, int* index, uint32_t hash) {
 
 uint32_t pop(uint32_t* stack, int* index) {
     if (*index == 0) {
-        if (DEBUG > 1) printf("Stack is empty\n");
         exit(5);
     }
     return stack[--(*index)];
