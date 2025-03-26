@@ -25,10 +25,6 @@ int main(void)
             setMatrixValue(matrix, i, j, initialMatrix[i][j]);
         }
     }
-    uint32_t* testedStack = allocStack();
-    if (testedStack == NULL) {
-        return 1;
-    }
 
     struct Target* wanted = (struct Target*) malloc(sizeof(struct Target));
     wanted->wantedChar = 'D';
@@ -38,7 +34,6 @@ int main(void)
     if (!checkWantedAllowed(wanted)) {
         return 1;
     }
-    int stackIndex = 0;
 
     BinarySearchTree* bst = bstCreate(sizeof(uint32_t));
 
