@@ -9,46 +9,30 @@
 #include <string.h>
 #include "main.h"
 
-char** allocStack() {
-    char** stack = (char**)malloc(STACK_SIZE * sizeof(char*));
-    for (int i = 0; i < STACK_SIZE; i++) {
-        stack[i] = NULL;
-    }
+uint32_t* allocStack() {
+    uint32_t* stack = (uint32_t*)malloc(STACK_SIZE * sizeof(uint32_t));
     return stack;
 }
 
-void push(char** stack, int* index, char* str) {
+void push(uint32_t* stack, int* index, uint32_t hash) {
     if (*index == STACK_SIZE - 1) {
         printf("Stack is full\n");
         exit(-1);
     }
-    if (stack[*index] == NULL) {
-        if (DEBUG > 1) {
-            printf("debug {i:%d, str:%s}\n", *index, str);
-        }
-        stack[(*index)++] = str;
-        return;
-    }
-    printf("problem in Stack\n");
-    exit(-1);
+    stack[(*index)++] = hash;
 }
 
-char* pop(char** stack, int* index) {
+uint32_t pop(uint32_t* stack, int* index) {
     if (*index == 0) {
         if (DEBUG > 1) printf("Stack is empty\n");
-        return NULL;
+        exit(5);
     }
-    if (stack[--(*index)] != NULL) {
-        char* str = stack[*index];
-        stack[*index] = NULL;
-        return str;
-    }
-    return NULL;
+    return stack[--(*index)];
 }
 
-int contains(char** stack, int* index, char* str) {
+int contains(uint32_t* stack, int* index, uint32_t hash) {
     for (int i = 0; i < *index; i++) {
-        if (stack[i] != NULL && strcmp(stack[i], str) == 0) {
+        if (stack[i] == hash) {
             return 1;
         }
     }
